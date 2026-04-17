@@ -5,12 +5,16 @@ import { GetTransactionsArgs } from '../../types.js';
 export class GetTransactionsInputParser {
   parse(args: unknown): GetTransactionsArgs {
     if (!args || typeof args !== 'object') {
-      throw new Error('Arguments must be an object');
+      throw new Error(
+        'Arguments must be an object. Provide at least accountId. If you do not know it yet, call get-accounts first.'
+      );
     }
     const argsObj = args as Record<string, unknown>;
     const { accountId, startDate, endDate, minAmount, maxAmount, categoryName, payeeName, limit } = argsObj;
     if (!accountId || typeof accountId !== 'string') {
-      throw new Error('accountId is required and must be a string');
+      throw new Error(
+        'accountId is required and must be a string. Call get-accounts first, then pass one of the returned account IDs to get-transactions.'
+      );
     }
     return {
       accountId,

@@ -43,7 +43,9 @@ export async function initActualApi(): Promise<void> {
     const serverURL = process.env.ACTUAL_SERVER_URL;
     const password = process.env.ACTUAL_PASSWORD;
     // Reason: InitConfig is a discriminated union in 26.x — NoServerConfig forbids serverURL/password
-    const initConfig = serverURL ? { dataDir, serverURL, password: password ?? '' } : { dataDir };
+    // Reason: Actual's SDK emits verbose progress/breadcrumb logs to stdout by default,
+    // which would corrupt the MCP stdio transport used by Claude Desktop.
+    const initConfig = serverURL ? { dataDir, serverURL, password: password ?? '', verbose: false } : { dataDir, verbose: false };
     await api.init(initConfig);
 
     const budgets: BudgetFile[] = await api.getBudgets();

@@ -13,14 +13,24 @@ export interface BudgetFile {
 
 // Type definitions for tool arguments
 export const GetTransactionsArgsSchema = z.object({
-  accountId: z.string(),
-  startDate: z.string().optional(),
-  endDate: z.string().optional(),
-  minAmount: z.number().optional(),
-  maxAmount: z.number().optional(),
-  categoryName: z.string().optional(),
-  payeeName: z.string().optional(),
-  limit: z.number().optional(),
+  accountId: z
+    .string()
+    .describe(
+      'Required. Actual account ID in UUID format. Call get-accounts first to find a valid accountId before using this tool.'
+    ),
+  startDate: z
+    .string()
+    .optional()
+    .describe('Optional. Start date in YYYY-MM-DD format. Defaults to the recent date range if omitted.'),
+  endDate: z
+    .string()
+    .optional()
+    .describe('Optional. End date in YYYY-MM-DD format. Defaults to today if omitted.'),
+  minAmount: z.number().optional().describe('Optional. Minimum transaction amount in decimal currency units.'),
+  maxAmount: z.number().optional().describe('Optional. Maximum transaction amount in decimal currency units.'),
+  categoryName: z.string().optional().describe('Optional. Case-insensitive category name filter.'),
+  payeeName: z.string().optional().describe('Optional. Case-insensitive payee name filter.'),
+  limit: z.number().optional().describe('Optional. Maximum number of matching transactions to return.'),
 });
 
 export type GetTransactionsArgs = z.infer<typeof GetTransactionsArgsSchema>;
